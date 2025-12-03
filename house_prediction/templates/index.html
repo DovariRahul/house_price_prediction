@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>California House Price Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .form-container {
+            flex: 1 1 300px;
+        }
+        .image-container {
+            flex: 1 1 200px;
+            text-align: center;
+        }
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 15px;
+        }
+        label {
+            font-size: 14px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 6px;
+            box-sizing: border-box;
+        }
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f3f3f3;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>California House Price Predictor</h1>
+
+    <div class="container">
+        <div class="form-container">
+            <h3>Enter House Details</h3>
+            <form method="POST">
+                <div>
+                    <label for="medinc">Median Income (1–15, in $10,000s)</label><br>
+                    <input type="number" step="0.01" name="medinc" id="medinc" required>
+                </div>
+
+                <div>
+                    <label for="houseage">House Age (years)</label><br>
+                    <input type="number" step="0.1" name="houseage" id="houseage" required>
+                </div>
+
+                <div>
+                    <label for="averooms">Average Rooms</label><br>
+                    <input type="number" step="0.1" name="averooms" id="averooms" required>
+                </div>
+
+                <div>
+                    <label for="avebedrooms">Average Bedrooms</label><br>
+                    <input type="number" step="0.1" name="avebedrooms" id="avebedrooms" required>
+                </div>
+
+                <div>
+                    <label for="population">Population</label><br>
+                    <input type="number" step="1" name="population" id="population" required>
+                </div>
+
+                <div>
+                    <label for="aveoccp">Average Occupancy</label><br>
+                    <input type="number" step="0.1" name="aveoccp" id="aveoccp" required>
+                </div>
+
+                <div>
+                    <label for="latitude">Latitude (32–42)</label><br>
+                    <input type="number" step="0.001" name="latitude" id="latitude" required>
+                </div>
+
+                <div>
+                    <label for="longitude">Longitude (-124 to -114)</label><br>
+                    <input type="number" step="0.001" name="longitude" id="longitude" required>
+                </div>
+
+                <div class="full-width">
+                    <button type="submit" class="btn btn-primary">Predict Price</button>
+                </div>
+            </form>
+
+            {% if prediction is not none %}
+            <div class="result">
+                {% if price_usd %}
+                    <p><strong>Predicted median house value:</strong> {{ "%.2f" % prediction }} (in $100,000s)</p>
+                    <p><strong>Estimated price:</strong> ${{ "{:,.2f}".format(price_usd) }}</p>
+                {% else %}
+                    <p>{{ prediction }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="image-container">
+            <h3>Sample House</h3>
+            <img src="{{ image_url }}" alt="House Image">
+        </div>
+    </div>
+</body>
+</html>
